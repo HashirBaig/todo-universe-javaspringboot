@@ -14,7 +14,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
+    @PostMapping("/guest")
     @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<UserResponse> createUser() {
         return ApiResponse.success(userService.createUser());
