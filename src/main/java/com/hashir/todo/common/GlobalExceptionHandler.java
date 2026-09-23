@@ -1,5 +1,6 @@
 package com.hashir.todo.common;
 
+import com.hashir.todo.task.InvalidTaskTypeException;
 import com.hashir.todo.user.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,5 +37,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ApiResponse<>("Something went wrong", null));
+    }
+
+    @ExceptionHandler(InvalidTaskTypeException.class)
+    public ResponseEntity<ApiResponse<Void>> handleInvalidTaskType(InvalidTaskTypeException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse<>(ex.getMessage(), null));
     }
 }

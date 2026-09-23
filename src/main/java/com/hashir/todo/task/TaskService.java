@@ -18,8 +18,15 @@ public class TaskService {
     }
 
     // GET ALL TASK BY USER
-    public Page<TaskResponse> getAllTaskByUser(Long userId, Pageable pageable) {
-        return taskRepository.findByUserId(userId, pageable).map(TaskResponse::fromEntity);
+    public Page<TaskResponse> getAllTaskByUser(Long userId, String taskType, Pageable pageable) {
+        Page<Task> task = switch (taskType) {
+            case "all" -> taskRepository.findByUserId(userId, pageable);
+            case "active" -> taskRepository.findByUserIdAndCompleted(userId, false, pageable);
+            case "completed" -> taskRepository.findByUserIdAndCompleted(userId, true, pageable);
+            default -> throw new InvalidTaskTypeException(taskType);
+        };
+
+        return task.map(TaskResponse::fromEntity);
     }
 
     // EDIT TASK

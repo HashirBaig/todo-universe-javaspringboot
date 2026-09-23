@@ -22,9 +22,10 @@ public class TaskController {
     @GetMapping
     public ApiResponse<Page<TaskResponse>> getAllTaskByUser(
             @RequestHeader("X-Guest-Id") Long userId,
+            @RequestParam(name = "task_type", defaultValue = "all") String taskType,
             @PageableDefault(size = 2, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        return ApiResponse.success(taskService.getAllTaskByUser(userId, pageable));
+        return ApiResponse.success(taskService.getAllTaskByUser(userId, taskType, pageable));
     }
 
     @PostMapping

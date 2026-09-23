@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TaskRepository extends JpaRepository<Task, Long>{
     Page<Task> findByUserId(Long userId, Pageable pageable);
+    Page<Task> findByUserIdAndCompleted(Long userId, boolean completed, Pageable pageable);
 }
