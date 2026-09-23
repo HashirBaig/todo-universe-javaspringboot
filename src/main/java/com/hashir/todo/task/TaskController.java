@@ -4,8 +4,10 @@ import com.hashir.todo.common.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 
 @Slf4j
 @RestController
@@ -18,8 +20,11 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<TaskResponse> getAllTaskByUser(@RequestHeader("X-Guest-Id") Long userId) {
-        return taskService.getAllTaskByUser(userId);
+    public ApiResponse<Page<TaskResponse>> getAllTaskByUser(
+            @RequestHeader("X-Guest-Id") Long userId,
+            @PageableDefault(size = 2, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return ApiResponse.success(taskService.getAllTaskByUser(userId, pageable));
     }
 
     @PostMapping

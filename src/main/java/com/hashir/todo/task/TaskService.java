@@ -4,8 +4,8 @@ import com.hashir.todo.user.User;
 import com.hashir.todo.user.UserNotFoundException;
 import com.hashir.todo.user.UserRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class TaskService {
@@ -18,8 +18,8 @@ public class TaskService {
     }
 
     // GET ALL TASK BY USER
-    public List<TaskResponse> getAllTaskByUser(Long userId) {
-        return taskRepository.findByUserId(userId).stream().map(TaskResponse::fromEntity).toList();
+    public Page<TaskResponse> getAllTaskByUser(Long userId, Pageable pageable) {
+        return taskRepository.findByUserId(userId, pageable).map(TaskResponse::fromEntity);
     }
 
     // EDIT TASK
